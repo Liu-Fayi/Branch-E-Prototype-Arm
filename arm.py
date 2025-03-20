@@ -1,6 +1,7 @@
 from ik import IKSolver
 from servo import Servo
 from stepper import Stepper
+import math
 import board
 
 class Arm:
@@ -16,4 +17,37 @@ class Arm:
 
     def move_to(self, x, y, z, wrist_angle):
         t1, t2 = self.ik_solver.solve(x, y)
-        
+        self.base_rotate_to(t1)
+        self.z_move_to(z)
+        self.elbow_move(t2)
+        self.wrist_move(wrist_angle)
+
+    def open_claw(self):
+        self.claw.set_angle(0)
+    
+    def close_claw(self):
+        self.claw.set_angle(70)
+
+    def base_rotate(self, angle):
+        if angle > 0:
+            self.base_rotate.turn_to(int(math.degrees(angle)*10/1.8), True)
+        else:
+            self.base_rotate.turn_to(int(math.degrees(angle)*10/1.8), False)
+
+    def base_rotate_to(self, angle):
+        self.base_rotate.turn_to_target(int(math.degrees(angle)*10/1.8))
+
+    def z_move(self, distance):
+        if distance > 0:
+            self.z_movement.turn_to(int(distance*10/8*360/1.8), True)
+        else:
+            self.z_movement.turn_to(int(distance*10/8*360/1.8), False)
+
+    def z_move_to(self, distance):
+        self.z_movement.turn_to_target(int(distance*10/8*360/1.8))
+
+    def elbow_move(self, angle):
+        self.elbow.set_angle(math.degrees(angle))
+
+    def wrist_move(self, angle):
+        self.wrist.set_angle(math.degrees(angle))

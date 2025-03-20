@@ -13,12 +13,27 @@ class Stepper:
         self.DELAY = 0.01
         self.step_count = 0
 
-    def turn_to(self, steps, direction):
+    def turn_to_target(self, target):
+        '''input target is the target position to turn to'''
+        steps = target - self.step_count
+        if steps > 0:
+            self.turn_to(steps, True)
+        else:
+            self.turn_to(-steps, False)
+
+    def turn_to(self, steps, forward):
         '''input steps is the number of steps to turn and direction is the direction to turn'''
+        if forward:
+            direction = stepper.FORWARD
+        else:
+            direction = stepper.BACKWARD
         for i in range(steps):
             self.motor.onestep(direction=direction)
             time.sleep(self.DELAY)
-            self.step_count += 1
+            if forward:
+                self.step_count += 1
+            else:
+                self.step_count -= 1
     
     def get_position(self):
         '''returns the current position of the stepper motor'''
@@ -28,11 +43,18 @@ class Stepper:
         '''resets the position of the stepper motor to 0'''
         self.step_count = 0
 
-    def turn(self, direction):
+    def turn(self, forward):
         '''input direction is the direction to turn'''
+        if forward:
+            direction = stepper.FORWARD
+        else:
+            direction = stepper.BACKWARD
         self.motor.onestep(direction=direction)
         time.sleep(self.DELAY)
-        self.step_count += 1
+        if forward:
+            self.step_count += 1
+        else:
+            self.step_count -= 1
 
     def release(self):
         '''clears coils so no power is sent to motor & shaft can spin freely'''
