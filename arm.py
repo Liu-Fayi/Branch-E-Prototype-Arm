@@ -6,8 +6,8 @@ import board
 
 class Arm:
     def __init__(self):
-        self.forearm_length = 0.1
-        self.upperarm_length = 0.1
+        self.forearm_length = 12.647
+        self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
         self.base_rotate = Stepper(board.GP0, board.GP1, board.GP2, board.GP3)
         self.z_movement = Stepper(board.GP4, board.GP5, board.GP6, board.GP7)

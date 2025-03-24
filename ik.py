@@ -8,10 +8,11 @@ class IKSolver():
     def solve(self, x: float, y: float) -> tuple:
         # Solve the inverse kinematics problem
         # and return the angles of the two joints
-        t_avg = math.atan2(y, x)
-        d = (self.r1**2 + self.r2**2 - x**2 - y**2) / (2 * self.r1 * self.r2)
-        d = math.acos(d)
-        d = math.pi - d/2
-        t1 = t_avg + d
-        t2 = t_avg - d
-        return (t1, t2)
+        t = math.atan2(y, x)
+        u1 = (self.r1**2 + self.r2**2 - x**2 - y**2) / (2 * self.r1 * self.r2)
+        u1 = math.acos(d)
+        u2 = (self.r1**2 + x**2 + y**2 - self.r2**2) / (2 * self.r1 * math.sqrt(x**2 + y**2))
+        u2 = math.acos(u2)
+        a1 = t - u2
+        a2 = math.pi - u1
+        return (a1, a2)
