@@ -1,0 +1,206 @@
+CASE 2 - 16.3 cm DM 1 TIME 100
+5 Readings
+Auto-reload is on. Simply save files over USB to run them or enter REPL to disable.
+code.py output:
+Microcontroller booted, starting execution...
+Initializing hardware...
+Initial distance reading: 20.2 cm
+Hardware initialized successfully
+Starting scan...
+Interrupt timeout
+Angle: 0, Distance: 201.737 mm
+Angle: 1, Distance: 200.0 mm
+Angle: 2, Distance: 199.0 mm
+Angle: 3, Distance: 202.0 mm
+Angle: 4, Distance: 202.45 mm
+Angle: 5, Distance: 206.2 mm
+Angle: 6, Distance: 209.0 mm
+Angle: 7, Distance: 210.2 mm
+Angle: 8, Distance: 213.25 mm
+Angle: 9, Distance: 215.8 mm
+Angle: 10, Distance: 217.0 mm
+Angle: 11, Distance: 219.0 mm
+Angle: 12, Distance: 221.0 mm
+Angle: 13, Distance: 225.0 mm
+Angle: 14, Distance: 224.0 mm
+Angle: 15, Distance: 225.25 mm
+Angle: 16, Distance: 229.4 mm
+Angle: 17, Distance: 230.55 mm
+Angle: 18, Distance: 233.1 mm
+Angle: 19, Distance: 234.85 mm
+Angle: 20, Distance: 239.0 mm
+Angle: 21, Distance: 238.0 mm
+Angle: 22, Distance: 238.0 mm
+Angle: 23, Distance: 226.0 mm
+Angle: 24, Distance: 209.8 mm
+Angle: 25, Distance: 185.2 mm
+Angle: 26, Distance: 174.4 mm
+Angle: 27, Distance: 161.5 mm
+Angle: 28, Distance: 150.6 mm
+Angle: 29, Distance: 145.5 mm
+Angle: 30, Distance: 143.2 mm
+Angle: 31, Distance: 142.0 mm
+Angle: 32, Distance: 135.0 mm
+Angle: 33, Distance: 134.0 mm
+Angle: 34, Distance: 131.0 mm
+Angle: 35, Distance: 129.7 mm
+Angle: 36, Distance: 128.0 mm
+Angle: 37, Distance: 128.0 mm
+Angle: 38, Distance: 126.9 mm
+Angle: 39, Distance: 126.0 mm
+Angle: 40, Distance: 125.15 mm
+Angle: 41, Distance: 125.95 mm
+Angle: 42, Distance: 128.0 mm
+Angle: 43, Distance: 129.0 mm
+Angle: 44, Distance: 129.0 mm
+Angle: 45, Distance: 129.0 mm
+Angle: 46, Distance: 129.4 mm
+Angle: 47, Distance: 131.3 mm
+Angle: 48, Distance: 132.45 mm
+Angle: 49, Distance: 133.0 mm
+Angle: 50, Distance: 134.5 mm
+Angle: 51, Distance: 135.85 mm
+Angle: 52, Distance: 136.0 mm
+Angle: 53, Distance: 137.0 mm
+Angle: 54, Distance: 139.0 mm
+Angle: 55, Distance: 139.0 mm
+Angle: 56, Distance: 141.85 mm
+Angle: 57, Distance: 141.25 mm
+Angle: 58, Distance: 143.2 mm
+Angle: 59, Distance: 145.0 mm
+Angle: 60, Distance: 145.0 mm
+Angle: 61, Distance: 145.0 mm
+Angle: 62, Distance: 149.0 mm
+Angle: 63, Distance: 148.0 mm
+Angle: 64, Distance: 152.0 mm
+Angle: 65, Distance: 153.0 mm
+Angle: 66, Distance: 153.1 mm
+Angle: 67, Distance: 154.0 mm
+Angle: 68, Distance: 155.35 mm
+Angle: 69, Distance: 156.45 mm
+Angle: 70, Distance: 159.75 mm
+Angle: 71, Distance: 159.3 mm
+Angle: 72, Distance: 161.0 mm
+Angle: 73, Distance: 163.0 mm
+Angle: 74, Distance: 165.0 mm
+Angle: 75, Distance: 167.25 mm
+Angle: 76, Distance: 173.05 mm
+Angle: 77, Distance: 180.4 mm
+Angle: 78, Distance: 186.0 mm
+Angle: 79, Distance: 192.0 mm
+Angle: 80, Distance: 200.4 mm
+Angle: 81, Distance: 212.45 mm
+Angle: 82, Distance: 217.0 mm
+Angle: 83, Distance: 267.0 mm
+Angle: 84, Distance: 296.0 mm
+Angle: 85, Distance: 345.5 mm
+Angle: 86, Distance: 409.5 mm
+Angle: 87, Distance: 759.15 mm
+Angle: 88, Distance: 1237.8 mm
+Angle: 89, Distance: 1297.4 mm
+Angle: 90, Distance: 1331.6 mm
+Angle: 0, Slope: 0.00
+Angle: 1, Slope: -0.91
+Angle: 2, Slope: 0.09
+Angle: 3, Slope: 0.82
+Angle: 4, Slope: 2.40
+Angle: 5, Slope: 2.33
+Angle: 6, Slope: 2.58
+Angle: 7, Slope: 2.35
+Angle: 8, Slope: 2.27
+Angle: 9, Slope: 2.27
+Angle: 10, Slope: 1.92
+Angle: 11, Slope: 1.73
+Angle: 12, Slope: 2.67
+Angle: 13, Slope: 1.67
+Angle: 14, Slope: 1.42
+Angle: 15, Slope: 1.47
+Angle: 16, Slope: 2.18
+Angle: 17, Slope: 2.62
+Angle: 18, Slope: 1.82
+Angle: 19, Slope: 2.82
+Angle: 20, Slope: 1.63
+Angle: 21, Slope: 1.05
+Angle: 22, Slope: -4.33
+Angle: 23, Slope: -9.40
+Angle: 24, Slope: -17.60
+Angle: 25, Slope: -17.20
+Angle: 26, Slope: -16.10
+Angle: 27, Slope: -11.53
+Angle: 28, Slope: -9.63
+Angle: 29, Slope: -6.10
+Angle: 30, Slope: -2.87
+Angle: 31, Slope: -3.50
+Angle: 32, Slope: -3.07
+Angle: 33, Slope: -3.67
+Angle: 34, Slope: -1.77
+Angle: 35, Slope: -2.00
+Angle: 36, Slope: -1.00
+Angle: 37, Slope: -0.93
+Angle: 38, Slope: -0.67
+Angle: 39, Slope: -0.95
+Angle: 40, Slope: -0.32
+Angle: 41, Slope: 0.67
+Angle: 42, Slope: 1.28
+Angle: 43, Slope: 1.02
+Angle: 44, Slope: 0.33
+Angle: 45, Slope: 0.13
+Angle: 46, Slope: 0.77
+Angle: 47, Slope: 1.15
+Angle: 48, Slope: 1.20
+Angle: 49, Slope: 1.07
+Angle: 50, Slope: 1.13
+Angle: 51, Slope: 1.00
+Angle: 52, Slope: 0.83
+Angle: 53, Slope: 1.05
+Angle: 54, Slope: 1.00
+Angle: 55, Slope: 1.62
+Angle: 56, Slope: 0.75
+Angle: 57, Slope: 1.40
+Angle: 58, Slope: 1.05
+Angle: 59, Slope: 1.25
+Angle: 60, Slope: 0.60
+Angle: 61, Slope: 1.33
+Angle: 62, Slope: 1.00
+Angle: 63, Slope: 2.33
+Angle: 64, Slope: 1.33
+Angle: 65, Slope: 1.70
+Angle: 66, Slope: 0.67
+Angle: 67, Slope: 0.78
+Angle: 68, Slope: 1.12
+Angle: 69, Slope: 1.92
+Angle: 70, Slope: 1.32
+Angle: 71, Slope: 1.52
+Angle: 72, Slope: 1.08
+Angle: 73, Slope: 1.90
+Angle: 74, Slope: 2.08
+Angle: 75, Slope: 3.35
+Angle: 76, Slope: 5.13
+Angle: 77, Slope: 6.25
+Angle: 78, Slope: 6.32
+Angle: 79, Slope: 6.67
+Angle: 80, Slope: 8.82
+Angle: 81, Slope: 8.33
+Angle: 82, Slope: 22.20
+Angle: 83, Slope: 27.85
+Angle: 84, Slope: 42.83
+Angle: 85, Slope: 47.50
+Angle: 86, Slope: 154.38
+Angle: 87, Slope: 297.43
+Angle: 88, Slope: 295.97
+Angle: 89, Slope: 190.82
+Angle: 90, Slope: 34.20
+Negative edge: Angle 23 to 24, Distance 226.0 to 209.8, Slope -17.60
+Positive edge: Angle 86 to 87, Distance 409.5 to 759.1, Slope 297.43
+Least-squares slope: -1.407, Orientation angle: -46.7°
+
+Object Properties:
+Center Point: (x=85.8, y=137.3, z=0.0) mm
+Orientation: (-0.579, 0.815, 0.000)
+Center Angle: 58.2°
+Center Distance: 161.9 mm
+Smoothly returning servo to center angle: 58.2°
+Servo returned to center
+Cleanup complete
+
+Code done running.
