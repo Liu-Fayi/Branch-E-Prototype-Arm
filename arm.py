@@ -14,7 +14,7 @@ Y_OFF = 0
 
 i2c = busio.I2C(board.GP17, board.GP16)
 SLAVE_ADDRESS = 0x08
-i2c.configure(addres = SLAVE_ADDRESS, slave = True)
+i2c.configure(address = SLAVE_ADDRESS, slave = True)
 
 
 
@@ -94,5 +94,9 @@ def main():
                 break
             else:
                 print("Invalid data received")
+
+
+if __name__ == "__main__":
+    main()
                 
     
