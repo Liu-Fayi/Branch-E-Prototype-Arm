@@ -36,8 +36,6 @@ class Arm:
         self.z_move_to(z)
         self.elbow_move(t2)
         self.wrist_move(wrist_angle)
-    
-    def calibrate(self):
 
 
     def open_claw(self):

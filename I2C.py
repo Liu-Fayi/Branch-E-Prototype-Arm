@@ -1,8 +1,10 @@
 import time
 import board
 import busio
+import struct
+import math
 
-SLAVE_ADDRESS = 0x42
+SLAVE_ADDRESS = 0x08
 
 class I2C:
     def __init__(self, scl_pin=board.GP17, sda_pin=board.GP16, address=SLAVE_ADDRESS):
@@ -27,7 +29,10 @@ class I2C:
             if self.i2c.requested():
                 buffer = self.i2c.read(expected_bytes)
                 if buffer and len(buffer) == expected_bytes:
-                    return buffer
+                    x, y, z, ox, oy, oz = struct.unpack('ffffff', buffer)
+                    angle = math.atan2(y, x)
+                    print(f"Received data: ({x}, {y}, {z}), ({ox}, {oy}, {oz})")
+                    return (x,y,z,angle)
                 else:
                     print("Invalid data received:", len(buffer) if buffer else "None")
             time.sleep(0.01)
