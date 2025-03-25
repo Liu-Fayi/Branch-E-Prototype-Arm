@@ -3,6 +3,21 @@ from servo import Servo
 from stepper import Stepper
 import math
 import board
+import busio
+from digitalio import DigitalInOut
+import struct
+
+X_OFF = 0
+Y_OFF = 0
+
+
+
+i2c = busio.I2C(board.GP17, board.GP16)
+SLAVE_ADDRESS = 0x08
+i2c.configure(addres = SLAVE_ADDRESS, slave = True)
+
+
+
 
 class Arm:
     def __init__(self):
@@ -51,3 +66,33 @@ class Arm:
 
     def wrist_move(self, angle):
         self.wrist.set_angle(math.degrees(angle))
+
+
+def send_go_signal(i2c):
+    while not i2c.try_lock():
+        pass
+    try:
+        i2c.writeto(SLAVE_ADDRESS, bytes([0x01]))
+    finally:
+        i2c.unlock() 
+
+
+def main():
+    arm = Arm()
+    send_go_signal(i2c)
+    while True:
+        if i2c.requested():
+            buffer = i2c.read(24)
+            if buffer and len(buffer) == 24:
+                x, y, z, orient_x, orient_y, _ = struct.unpack('ffffff', buffer)
+                arm.move_to(x + X_OFF , y + Y_OFF , 10 , math.atan2(orient_y, orient_x))
+                arm.open_claw()
+                arm.move_to(x + X_OFF , y + Y_OFF , 3 , math.atan2(orient_y, orient_x))
+                arm.close_claw()
+                arm.move_to(x + X_OFF , y + Y_OFF , 10 , math.atan2(orient_y, orient_x))
+                arm.move_to(0, 0, 10, 0)
+                break
+            else:
+                print("Invalid data received")
+                
+    
