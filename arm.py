@@ -37,7 +37,6 @@ class Arm:
         self.elbow_move(t2)
         self.wrist_move(wrist_angle)
 
-
     def open_claw(self):
         self.claw.set_angle(0)
     

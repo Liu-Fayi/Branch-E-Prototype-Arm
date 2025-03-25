@@ -29,9 +29,9 @@ class I2C:
             if self.i2c.requested():
                 buffer = self.i2c.read(expected_bytes)
                 if buffer and len(buffer) == expected_bytes:
-                    x, y, z, ox, oy, oz = struct.unpack('ffffff', buffer)
-                    angle = math.atan2(y, x)
-                    print(f"Received data: ({x}, {y}, {z}), ({ox}, {oy}, {oz})")
+                    x, y, z, ox, oy, _ = struct.unpack('ffffff', buffer)
+                    angle = math.atan2(oy, ox)
+                    print(f"Received data: ({x}, {y}, {z}), ({angle} degrees)")
                     return (x,y,z,angle)
                 else:
                     print("Invalid data received:", len(buffer) if buffer else "None")

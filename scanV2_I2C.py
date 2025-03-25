@@ -186,7 +186,7 @@ def main():
 
     try:
         # Initialize I2C early if using I2C go signal
-        i2c = busio.I2C(scl=board.GP17, sda=board.GP16)
+        i2c = busio.I2C(scl=board.GP20, sda=board.GP21)
         wait_for_go_signal(i2c)
 
         vl53, servo, current_angle, interrupt, i2c = initialize_hardware()
