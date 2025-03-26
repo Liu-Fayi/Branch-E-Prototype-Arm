@@ -36,4 +36,5 @@ class I2C:
                 else:
                     print("Invalid data received:", len(buffer) if buffer else "None")
             time.sleep(0.01)
+            
 

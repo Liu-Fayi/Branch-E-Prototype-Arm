@@ -1,9 +1,20 @@
 from arm import Arm
 from I2C import I2C
 import time
+import math
 
 X_OFF = 0
 Y_OFF = 0
+ANGLE_OFF = 0
+
+
+def transform_sensor_to_arm(x, y, z, angle):
+    theta = math.radians(angle)
+    x_arm = X_OFF + x * math.cos(theta) - y * math.sin(theta)
+    y_arm = Y_OFF + x * math.sin(theta) + y * math.cos(theta)
+    angle_arm = angle + ANGLE_OFF
+    return x_arm, y_arm, z, angle_arm
+
 
 def main():
     arm = Arm()
@@ -14,13 +25,14 @@ def main():
 
     x,y,_,angle = i2c.wait_for_data()
 
-    arm.move_to(x+X_OFF, y + Y_OFF, 10, angle)
+    ax, ay ,_, a_angle = transform_sensor_to_arm(x, y, 0, angle)
+    arm.move_to(ax, ay, 10, a_angle)
     arm.open_claw()
     time.sleep(1)
-    arm.move_to(x+X_OFF, y + Y_OFF, 3, angle)
+    arm.move_to(ax, ay, 3, a_angle)
     arm.close_claw()
     time.sleep(1)
-    arm.move_to(x+X_OFF, y + Y_OFF, 10, angle)
+    arm.move_to(ax, ay, 10, a_angle)
     arm.move_to(0, 0, 10, 0)
     arm.open_claw()
 
