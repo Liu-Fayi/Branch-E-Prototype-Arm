@@ -70,14 +70,14 @@ class Arm:
     def calibrate_base(self):
         step_size = 1
         while self.base_limit.value:
-            self.base_rotate.turn(step_size, False)
+            self.base_rotate.turn(False)
             time.sleep(0.01)
         self.base_rotate.reset_position()
 
     def calibrate_z(self): 
         step_size = 1
         while self.z_limit.value:
-            self.z_movement.turn(step_size, False)
+            self.z_movement.turn(False)
             time.sleep(0.01)
         self.z_movement.reset_position()
     

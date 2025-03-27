@@ -10,7 +10,7 @@ class IKSolver():
         # and return the angles of the two joints
         t = math.atan2(y, x)
         u1 = (self.r1**2 + self.r2**2 - x**2 - y**2) / (2 * self.r1 * self.r2)
-        u1 = math.acos(d)
+        u1 = math.acos(u1)
         u2 = (self.r1**2 + x**2 + y**2 - self.r2**2) / (2 * self.r1 * math.sqrt(x**2 + y**2))
         u2 = math.acos(u2)
         a1 = t - u2
