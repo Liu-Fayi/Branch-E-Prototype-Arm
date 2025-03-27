@@ -186,8 +186,8 @@ def main():
 
     try:
         # Initialize I2C early if using I2C go signal
-        i2c = busio.I2C(scl=board.GP20, sda=board.GP21)
-        wait_for_go_signal(i2c)
+        i2c2 = busio.I2C(scl=board.GP20, sda=board.GP21)
+        wait_for_go_signal(i2c2)
 
         vl53, servo, current_angle, interrupt, i2c = initialize_hardware()
 
@@ -196,7 +196,7 @@ def main():
 
         if len(edges) == 2:
             center, orientation, center_angle, center_dist = calculate_object_properties(edges, data)
-            send_i2c_data(i2c, center, orientation)
+            send_i2c_data(i2c2, center, orientation)
             current_angle = set_servo_angle(servo, current_angle, center_angle)
             time.sleep(8)
             current_angle = set_servo_angle(servo, current_angle, 0)
