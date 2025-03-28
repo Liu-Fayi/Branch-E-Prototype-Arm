@@ -1,15 +1,14 @@
 import board
 import digitalio
-from adafruit_motor import stepper
 import time
 
 class Stepper:
-    def __init__(self, AIN1, AIN2, BIN1, BIN2):
+    def __init__(self, dir, step):
         '''input pins are the pin numbers of the stepper motor in form board.GPXX'''
-        self.coils = (digitalio.DigitalInOut(AIN1), digitalio.DigitalInOut(AIN2), digitalio.DigitalInOut(BIN1), digitalio.DigitalInOut(BIN2))
-        for coil in self.coils:
-            coil.direction = digitalio.Direction.OUTPUT
-        self.motor = stepper.StepperMotor(self.coils[0], self.coils[1], self.coils[2], self.coils[3], microsteps=None)
+        self.dir = dir
+        self.step = step
+        self.dir.direction = digitalio.Direction.OUTPUT
+        self.step.direction = digitalio.Direction.OUTPUT
         self.DELAY = 0.01
         self.step_count = 0
 
@@ -24,11 +23,11 @@ class Stepper:
     def turn_to(self, steps, forward):
         '''input steps is the number of steps to turn and direction is the direction to turn'''
         if forward:
-            direction = stepper.FORWARD
+            direction = 1
         else:
-            direction = stepper.BACKWARD
+            direction = 0
         for i in range(steps):
-            self.motor.onestep(direction=direction)
+            self.onestep(direction)
             time.sleep(self.DELAY)
             if forward:
                 self.step_count += 1
@@ -46,10 +45,10 @@ class Stepper:
     def turn(self, forward):
         '''input direction is the direction to turn'''
         if forward:
-            direction = stepper.FORWARD
+            direction = 1
         else:
-            direction = stepper.BACKWARD
-        self.motor.onestep(direction=direction)
+            direction = 0
+        self.onestep(direction)
         time.sleep(self.DELAY)
         if forward:
             self.step_count += 1
@@ -60,3 +59,11 @@ class Stepper:
         '''clears coils so no power is sent to motor & shaft can spin freely'''
         self.motor.release()
         
+    def onestep(self, direction):
+        '''input direction is the direction to turn'''
+        if direction:
+            self.dir.value = True
+        else:
+            self.dir.value = False
+        self.step.value = not self.step.value
+        time.sleep(self.DELAY)

@@ -83,6 +83,9 @@ class Arm:
         while self.base_limit.value:
             self.base_rotate.turn(False)
             time.sleep(0.01)
+        while not self.base_limit.value:
+            self.base_rotate.turn(True)
+            time.sleep(0.1)
         self.base_rotate.reset_position()
 
     def calibrate_z(self): 
@@ -90,6 +93,9 @@ class Arm:
         while self.z_limit.value:
             self.z_movement.turn(False)
             time.sleep(0.01)
+        while not self.base_limit.value:
+            self.base_rotate.turn(True)
+            time.sleep(0.1)
         self.z_movement.reset_position()
     
 
