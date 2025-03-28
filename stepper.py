@@ -1,12 +1,13 @@
 import board
 import digitalio
+from digitalio import DigitalInOut
 import time
 
 class Stepper:
     def __init__(self, dir, step):
         '''input pins are the pin numbers of the stepper motor in form board.GPXX'''
-        self.dir = dir
-        self.step = step
+        self.dir = DigitalInOut(dir)
+        self.step = DigitalInOut(step)
         self.dir.direction = digitalio.Direction.OUTPUT
         self.step.direction = digitalio.Direction.OUTPUT
         self.DELAY = 0.01

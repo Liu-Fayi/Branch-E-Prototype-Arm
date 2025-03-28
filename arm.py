@@ -4,7 +4,6 @@ from stepper import Stepper
 import math
 import board
 import busio
-from digitalio import DigitalInOut
 import struct
 import digitalio
 import time
