@@ -4,6 +4,7 @@ from stepper import Stepper
 import math
 import board
 import busio
+from digitalio import DigitalInOut
 import struct
 import digitalio
 import time
@@ -21,7 +22,7 @@ class Arm:
         self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
         self.base_rotate = Stepper(board.GP2, board.GP3)
-        self.z_movement = Stepper(board.GP4, board.GP5, board.GP6, board.GP7)
+        #self.z_movement = Stepper(board.GP4, board.GP5)
         self.elbow = Servo(board.GP8, 50, 2 ** 15)
         self.wrist = Servo(board.GP9, 50, 2 ** 15)
         self.claw = Servo(board.GP10, 50, 2 ** 15)
@@ -29,7 +30,7 @@ class Arm:
         self.z_limit = digitalio.DigitalInOut(Z_LIMIT_PIN)
         for limit in (self.base_limit, self.z_limit):
             limit.direction = digitalio.Direction.INPUT
-            limit.pull = digitalio.Pull.UP 
+            limit.pull = digitalio.Pull.DOWN 
 
     def transform_sensor_to_arm(self, x, y, angle):
         theta = math.radians(angle)
@@ -80,18 +81,18 @@ class Arm:
     def calibrate_base(self):
         step_size = 1
         while self.base_limit.value:
+            self.base_rotate.DELAY = 0.005
             self.base_rotate.turn(False)
-            time.sleep(0.01)
         while not self.base_limit.value:
+            self.base_rotate.DELAY = 0.1
             self.base_rotate.turn(True)
-            time.sleep(0.1)
         self.base_rotate.reset_position()
 
     def calibrate_z(self): 
         step_size = 1
         while self.z_limit.value:
+            self.base_rotate.DELAY = 
             self.z_movement.turn(False)
-            time.sleep(0.01)
         while not self.base_limit.value:
             self.base_rotate.turn(True)
             time.sleep(0.1)
