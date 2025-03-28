@@ -8,7 +8,7 @@ import struct
 import digitalio
 import time
 
-BASE_LIMIT_PIN = board.GP11  
+BASE_LIMIT_PIN = board.GP0
 Z_LIMIT_PIN = board.GP12     
 
 
@@ -20,7 +20,7 @@ class Arm:
         self.forearm_length = 12.647
         self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
-        self.base_rotate = Stepper(board.GP0, board.GP1, board.GP2, board.GP3)
+        self.base_rotate = Stepper(board.GP2, board.GP3)
         self.z_movement = Stepper(board.GP4, board.GP5, board.GP6, board.GP7)
         self.elbow = Servo(board.GP8, 50, 2 ** 15)
         self.wrist = Servo(board.GP9, 50, 2 ** 15)
