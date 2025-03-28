@@ -14,7 +14,10 @@ Z_LIMIT_PIN = board.GP12
 
 
 class Arm:
-    def __init__(self):
+    def __init__(self, sensor_x=0, sensor_y=0, sensor_angle=0):
+        self.sensor_x = sensor_x
+        self.sensor_y = sensor_y
+        self.sensor_angle = sensor_angle
         self.forearm_length = 12.647
         self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
@@ -28,9 +31,17 @@ class Arm:
         for limit in (self.base_limit, self.z_limit):
             limit.direction = digitalio.Direction.INPUT
             limit.pull = digitalio.Pull.UP 
-        
 
-    def move_to(self, x, y, z, wrist_angle):
+    def transform_sensor_to_arm(self, x, y, angle):
+        theta = math.radians(angle)
+        x_arm = self.sensor_x + x * math.cos(theta) - y * math.sin(theta)
+        y_arm = self.sensor_y + x * math.sin(theta) + y * math.cos(theta)
+        angle_arm = angle + self.sensor_angle
+        return x_arm, y_arm, angle_arm
+
+    def move_to(self, x, y, z, wrist_angle, from_sensor=True):
+        if from_sensor:
+            x, y, wrist_angle = self.transform_sensor_to_arm(x, y, wrist_angle)
         t1, t2 = self.ik_solver.solve(x, y)
         self.base_rotate_to(t1)
         self.z_move_to(z)
