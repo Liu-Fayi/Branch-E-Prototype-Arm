@@ -10,7 +10,7 @@ class Stepper:
         self.step = DigitalInOut(step)
         self.dir.direction = digitalio.Direction.OUTPUT
         self.step.direction = digitalio.Direction.OUTPUT
-        self.DELAY = 0.01
+        self.DELAY = 0.001
         self.step_count = 0
 
     def turn_to_target(self, target):
@@ -29,7 +29,7 @@ class Stepper:
             direction = 0
         for i in range(steps):
             self.onestep(direction)
-            time.sleep(self.DELAY)
+            # time.sleep(self.DELAY)
             if forward:
                 self.step_count += 1
             else:
@@ -50,7 +50,7 @@ class Stepper:
         else:
             direction = 0
         self.onestep(direction)
-        time.sleep(self.DELAY)
+        # time.sleep(self.DELAY)
         if forward:
             self.step_count += 1
         else:
@@ -63,8 +63,8 @@ class Stepper:
     def onestep(self, direction):
         '''input direction is the direction to turn'''
         if direction:
-            self.dir.value = True
-        else:
             self.dir.value = False
+        else:
+            self.dir.value = True
         self.step.value = not self.step.value
         time.sleep(self.DELAY)
