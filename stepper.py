@@ -4,12 +4,15 @@ from digitalio import DigitalInOut
 import time
 
 class Stepper:
-    def __init__(self, dir, step):
+    def __init__(self, dir, step, sleep):
         '''input pins are the pin numbers of the stepper motor in form board.GPXX'''
         self.dir = DigitalInOut(dir)
         self.step = DigitalInOut(step)
+        self.sleep = DigitalInOut(sleep)
         self.dir.direction = digitalio.Direction.OUTPUT
         self.step.direction = digitalio.Direction.OUTPUT
+        self.sleep.direction = digitalio.Direction.OUTPUT
+        self.sleep.value = False
         self.DELAY = 0.001
         self.step_count = 0
 
@@ -92,9 +95,11 @@ class Stepper:
         
     def onestep(self, direction):
         '''input direction is the direction to turn'''
+        self.sleep.value = True
         if direction:
             self.dir.value = False
         else:
             self.dir.value = True
         self.step.value = not self.step.value
+        self.sleep.value = False
         time.sleep(self.DELAY)
