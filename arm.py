@@ -21,8 +21,8 @@ class Arm:
         self.forearm_length = 12.647
         self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
-        self.base_rotate = Stepper(board.GP4, board.GP5, board.)
-        self.z_movement = Stepper(board.GP2, board.GP3, board.)
+        self.base_rotate = Stepper(board.GP4, board.GP5, board.GP15)
+        self.z_movement = Stepper(board.GP2, board.GP3, board.GP14)
         self.elbow = Servo(board.GP8, 50, 2 ** 15)
         self.wrist = Servo(board.GP9, 50, 2 ** 15)
         self.claw = Servo(board.GP10, 50, 2 ** 15)
