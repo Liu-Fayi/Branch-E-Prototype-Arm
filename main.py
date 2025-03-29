@@ -1,43 +1,72 @@
-from arm import Arm
-from I2C import I2C
+from stepper import Stepper
 import time
+import board
+import digitalio
+import pwmio
+import adafruit_motor.servo
+from arm import Arm
+from uart import UARTRx
 import math
 
-X_OFF = 0
-Y_OFF = 0
-ANGLE_OFF = 0
+ut = UARTRx()
+
+arm = Arm()
+arm.open_claw()
+
+#arm.elbow_move(math.radians(70))
+#arm.calibrate_z()
+#arm.z_move_to(20)
+#arm.z_move_to(1)
+#arm.close_claw()
+#time.sleep(1)
+#arm.z_move_to(30)
+# arm.calibrate_base()
+#arm.elbow_move(math.radians(10))
+#time.sleep(1)
+#arm.open_claw()
+#time.sleep(2)
+# arm.base_rotate_to(math.radians(90))
+# arm.sleep_steppers()
+# arm.elbow_move(3.14/2)
+# arm.wrist_move(1.57)
+# arm.calibrate_base()
+# arm.calibrate_z()
+# arm.elbow_move(0)
+#arm.open_claw()
+#arm.wrist_move(0)
+# arm.base_rotate.sleep()
+# arm.z_movement.sleep()
+# time.sleep(10)
+# time.sleep(10)
+# time.sleep(10)
+
+ut.send_go_signal()
+print("scaning")
+print("scaning")
+x,y,z,angle = ut.wait_for_data()
+print(math.degrees(angle))
+arm.calibrate()
+arm.open_claw()
+arm.move_to(x, y, 1 , angle)
+arm.close_claw()
+arm.collect_branch()
 
 
-def transform_sensor_to_arm(x, y, z, angle):
-    theta = math.radians(angle)
-    x_arm = X_OFF + x * math.cos(theta) - y * math.sin(theta)
-    y_arm = Y_OFF + x * math.sin(theta) + y * math.cos(theta)
-    angle_arm = angle + ANGLE_OFF
-    return x_arm, y_arm, z, angle_arm
-
-
-def main():
-    arm = Arm()
-    i2c = I2C()
-    i2c.send_go_signal()
-    arm.calibrate_base()
-    arm.calibrate_z()
-
-    x,y,_,angle = i2c.wait_for_data()
-
-    ax, ay ,_, a_angle = transform_sensor_to_arm(x, y, 0, angle)
-    arm.move_to(ax, ay, 10, a_angle)
-    arm.open_claw()
-    time.sleep(1)
-    arm.move_to(ax, ay, 3, a_angle)
-    arm.close_claw()
-    time.sleep(1)
-    arm.move_to(ax, ay, 10, a_angle)
-    arm.move_to(0, 0, 10, 0)
-    arm.open_claw()
-
-if __name__ == "__main__":
-    main()
-
+# print(x,y,z,angle)
+#while True: 
+    #arm.open_claw()
+#arm.wrist_move(0)
+    #arm.elbow_move(3.14)
+    #print("open")
+    #time.sleep(1)
+    #arm.close_claw()
+#print("close")
+#arm.wrist_move(math.radians(43))
+    #arm.elbow_move(2.4)
+    #time.sleep(1)
     
+#arm.wrist_move(0)
+#time.sleep(2)
+
+
 
