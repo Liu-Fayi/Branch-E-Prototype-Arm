@@ -12,9 +12,15 @@ class Stepper:
         self.dir.direction = digitalio.Direction.OUTPUT
         self.step.direction = digitalio.Direction.OUTPUT
         self.sleep.direction = digitalio.Direction.OUTPUT
-        self.sleep.value = False
+        self.sleep.value = True
         self.DELAY = 0.001
         self.step_count = 0
+        
+    def sleep(self):
+        self.sleep.value = False
+        
+    def wake_up(self):
+        self.sleep.value = True
 
     def turn_to_target(self, target):
         '''input target is the target position to turn to'''
@@ -95,11 +101,12 @@ class Stepper:
         
     def onestep(self, direction):
         '''input direction is the direction to turn'''
-        self.sleep.value = True
+        # self.sleep.value = True
+        # print(self.step.value)
         if direction:
             self.dir.value = False
         else:
             self.dir.value = True
         self.step.value = not self.step.value
-        self.sleep.value = False
+        # self.sleep.value = False
         time.sleep(self.DELAY)
