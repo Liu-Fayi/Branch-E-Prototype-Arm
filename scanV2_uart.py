@@ -42,7 +42,7 @@ def get_sin(angle):
 
 def initialize_hardware(interrupt_pin=board.GP18):
     i2c = busio.I2C(scl=board.GP17, sda=board.GP16)
-    uart = busio.UART(board.GP4, board.GP5, baudrate=UART_BAUDRATE, timeout=0.1)
+    uart = busio.UART(board.TX, board.RX, baudrate=UART_BAUDRATE, timeout=0.1)
     interrupt = digitalio.DigitalInOut(interrupt_pin)
     interrupt.direction = digitalio.Direction.INPUT
     interrupt.pull = digitalio.Pull.UP

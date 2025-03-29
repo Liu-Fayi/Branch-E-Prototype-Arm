@@ -8,8 +8,8 @@ class Servo:
         '''input pin is the pin number of the servo in form board.GPXX'''
         self.pwm = pwmio.PWMOut(pin, frequency=pwm_freq, duty_cycle=pwm_duty_cycle)
         self.servo = servo.Servo(self.pwm)
-        self.angle = 0
-        self.servo.angle = self.angle
+        # self.angle = 0
+        # self.servo.angle = self.angle
         self.DELAY = 0.05
 
     def set_angle(self, angle):

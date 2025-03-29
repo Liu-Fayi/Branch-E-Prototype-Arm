@@ -13,7 +13,7 @@ ANGLE_STEP = 1
 NUM_READINGS = 20
 SMOOTH_STEP = 1
 SMOOTH_DELAY = 0.02
-INTERRUPT_TIMEOUT = 1
+INTERRUPT_TIMEOUT = .1
 MIN_EDGE_POINTS = 4
 
 # Trimmed trig tables (0° to 90°, 1° steps, 91 values)
@@ -37,6 +37,15 @@ SIN_TABLE = (0.0000, 0.0175, 0.0349, 0.0523, 0.0698, 0.0872, 0.1045, 0.1219, 0.1
              0.9397, 0.9455, 0.9511, 0.9563, 0.9613, 0.9659, 0.9703, 0.9744, 0.9781, 0.9816,
              0.9848, 0.9877, 0.9903, 0.9925, 0.9945, 0.9962, 0.9976, 0.9986, 0.9994, 0.9998,
              1.0000)
+def get_cos(angle):
+    angle = max(0, min(180, angle))
+    idx = int(angle + 0.5) if angle <= 90 else int(180 - angle + 0.5)
+    return COS_TABLE[idx] if angle <= 90 else -COS_TABLE[idx]
+
+def get_sin(angle):
+    angle = max(0, min(180, angle))
+    idx = int(90 - angle + 0.5) if angle <= 90 else int(angle - 90 + 0.5)
+    return COS_TABLE[idx]
 
 def initialize_hardware(interrupt_pin=board.GP18):
     print("Initializing hardware...")
@@ -46,7 +55,7 @@ def initialize_hardware(interrupt_pin=board.GP18):
     interrupt.pull = digitalio.Pull.UP
     vl53 = adafruit_vl53l1x.VL53L1X(i2c)
     vl53.distance_mode = 1
-    vl53.timing_budget = 50
+    vl53.timing_budget = 100
     vl53.start_ranging()
     pwm = pwmio.PWMOut(board.GP1, frequency=50, duty_cycle=2**15)
     servo = adafruit_motor.servo.Servo(pwm)
@@ -169,8 +178,8 @@ def calculate_object_properties(edges, data):
     center_dist = sum(distances[start_idx:end_idx+1]) / (end_idx - start_idx + 1)
 
     angle_idx = int(center_angle)
-    center_x = center_dist * COS_TABLE[angle_idx]
-    center_y = center_dist * SIN_TABLE[angle_idx]
+    center_x = center_dist * get_cos(angle_idx)
+    center_y = center_dist * get_sin(angle_idx)
     center_z = 0
 
     # Least-squares fit
@@ -178,8 +187,8 @@ def calculate_object_properties(edges, data):
     sum_x = sum_y = sum_xy = sum_xx = 0
     for i in range(start_idx, end_idx + 1):
         angle = int(valid_data[i][0])
-        x = valid_data[i][1] * COS_TABLE[angle]
-        y = valid_data[i][1] * SIN_TABLE[angle]
+        x = valid_data[i][1] * get_cos(angle)
+        y = valid_data[i][1] * get_sin(angle)
         sum_x += x
         sum_y += y
         sum_xy += x * y
