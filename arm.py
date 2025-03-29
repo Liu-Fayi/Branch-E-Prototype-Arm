@@ -21,8 +21,8 @@ class Arm:
         self.forearm_length = 12.647
         self.upperarm_length = 16.5
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
-        self.base_rotate = Stepper(board.GP2, board.GP3)
-        self.z_movement = Stepper(board.GP4, board.GP5)
+        self.base_rotate = Stepper(board.GP4, board.GP5, board.)
+        self.z_movement = Stepper(board.GP2, board.GP3, board.)
         self.elbow = Servo(board.GP8, 50, 2 ** 15)
         self.wrist = Servo(board.GP9, 50, 2 ** 15)
         self.claw = Servo(board.GP10, 50, 2 ** 15)
@@ -43,9 +43,11 @@ class Arm:
         if from_sensor:
             x, y, wrist_angle = self.transform_sensor_to_arm(x, y, wrist_angle)
         t1, t2 = self.ik_solver.solve(x, y)
+        self.base_rotate.set_velocity(150)
+        self.z_movement.set_velocity(800)
         self.base_rotate_to(t1)
         self.z_move_to(z)
-        self.elbow_move(t2)
+        self.elbow_move(math.pi-t2)
         self.wrist_move(wrist_angle)
 
     def open_claw(self):
@@ -81,20 +83,16 @@ class Arm:
     def calibrate_base(self):
         step_size = 1
         while self.base_limit.value:
-            self.base_rotate.DELAY = 0.005
-            self.base_rotate.turn(True)
+            self.base_rotate.turn_vel(True, 200)
         while not self.base_limit.value:
-            self.base_rotate.DELAY = 0.1
-            self.base_rotate.turn(True)
+            self.base_rotate.turn_vel(False, 20)
         self.base_rotate.reset_position()
 
     def calibrate_z(self):
         step_size = 1
         while self.z_limit.value:
-            self.z_movement.DELAY = 0.001
-            self.z_movement.turn(False)
+            self.z_movement.turn_vel(False, 1000)
         while not self.base_limit.value:
-            self.z_movement.DELAY = 0.01
-            self.z_movement.turn(True)
+            self.z_movement.turn_vel(True, 100)
         self.z_movement.reset_position()
 
