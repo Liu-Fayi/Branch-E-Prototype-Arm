@@ -50,9 +50,6 @@ class Arm:
             print("No solution found, going to max r")
             t1 = math.atan2(y, x)
             t2 = 0
-        else:
-            t1 += math.radians(15)
-            t2 += math.radians(5)
         print(math.degrees(t1), math.degrees(t2))
         self.base_rotation.set_velocity(150)
         self.z_movement.set_velocity(800)

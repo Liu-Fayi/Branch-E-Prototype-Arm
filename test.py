@@ -15,6 +15,6 @@ class Transform:
         return x_arm, y_arm, angle_arm
 
 i = ik.IKSolver(12.647, 16.5)
-tr = Transform(-105, 85, 15)
-res = tr.transform_sensor_to_arm(67, 121, 3)
-print(i.solve(0, 0))
+# tr = Transform(-105, 85, 15)
+# res = tr.transform_sensor_to_arm(67, 121, 3)
+print(i.solve(20, 14))
