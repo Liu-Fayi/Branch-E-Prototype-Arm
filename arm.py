@@ -14,7 +14,7 @@ Z_LIMIT_PIN = board.GP1
 
 
 class Arm:
-    def __init__(self, sensor_x=-105, sensor_y=85, sensor_angle=15):
+    def __init__(self, sensor_x=-105, sensor_y=96, sensor_angle=15):
         self.zero_base_angle = math.radians(268)
         self.wrist_offset = math.radians(43)
         self.sensor_x = sensor_x
@@ -23,7 +23,7 @@ class Arm:
         self.forearm_length = 126.47
         self.upperarm_length = 165
         self.ik_solver = IKSolver(self.forearm_length, self.upperarm_length)
-        self.base_rotation = Stepper(board.GP4, board.GP5, board.GP15) 
+        self.base_rotation = Stepper(board.GP4, board.GP5, board.GP15)
         self.z_movement = Stepper(board.GP2, board.GP3, board.GP14)
         self.elbow = Servo(board.GP8, 50, 2 ** 15)
         self.wrist = Servo(board.GP9, 50, 2 ** 15)
@@ -46,7 +46,13 @@ class Arm:
             x, y, wrist_angle = self.transform_sensor_to_arm(x, y, wrist_angle)
             print(x, y, z, math.degrees(wrist_angle))
         t1, t2 = self.ik_solver.solve(x, y)
-        t1 += math.radians(20)
+        if math.isnan(t1) or math.isnan(t2):
+            print("No solution found, going to max r")
+            t1 = math.atan2(y, x)
+            t2 = 0
+        else:
+            t1 += math.radians(15)
+            t2 += math.radians(5)
         print(math.degrees(t1), math.degrees(t2))
         self.base_rotation.set_velocity(150)
         self.z_movement.set_velocity(800)
@@ -88,14 +94,21 @@ class Arm:
         self.elbow.set_angle(math.degrees(angle))
 
     def wrist_move(self, angle):
+        angle = -angle
         while angle < math.radians(-33.4):
             angle += math.pi
         while angle > math.radians(106.5):
             angle -= math.pi
-        if angle < math.radians(-33.4):
-            angle = math.radians(-33.4)
+        if angle < math.radians(-33.4): 
+            if abs(angle - math.radians(-33.4)) < abs(angle - math.radians(106.5) + math.pi):
+                angle = math.radians(-33.4)
+            else:
+                angle = math.radians(106.5)
         elif angle > math.radians(106.5):
-            angle = math.radians(106.5)
+            if abs(angle - math.radians(106.5)) < abs(angle - math.radians(-33.4) - math.pi):
+                angle = math.radians(106.5)
+            else:
+                angle = math.radians(-33.4)
         self.wrist.set_angle(math.degrees(9/7*angle + self.wrist_offset))
 
     def calibrate_base(self):
@@ -114,7 +127,7 @@ class Arm:
         while not self.z_limit.value:
             self.z_movement.turn_vel(True, 100)
         self.z_movement.reset_position()
-        
+
     def calibrate(self):
         self.open_claw()
         self.elbow_move(0)
@@ -122,11 +135,11 @@ class Arm:
         time.sleep(0.5)
         self.z_move_to(25)
         self.calibrate_base()
-        
+
     def sleep_steppers(self):
         self.base_rotation.sleep()
         self.z_movement.sleep()
-        
+
     def collect_branch(self):
         self.z_move_to(30)
         self.elbow_move(0)
