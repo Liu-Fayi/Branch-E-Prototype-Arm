@@ -1,6 +1,6 @@
-from actuating_pico.ik import IKSolver
-from actuating_pico.servo import Servo
-from actuating_pico.stepper import Stepper
+from ik import IKSolver
+from servo import Servo
+from stepper import Stepper
 import math
 import board
 import busio
@@ -14,7 +14,7 @@ BASE_LIMIT_PIN = board.GP0
 Z_LIMIT_PIN = board.GP1
 
 class Arm:
-    def __init__(self, sensor_x=-105, sensor_y=96, sensor_angle=15):
+    def __init__(self, sensor_x=-108, sensor_y=100, sensor_angle=29):
         # Initialize basic configuration parameters converting degrees to radians when needed
         self.zero_base_angle = math.radians(268)     # Zero reference for base rotation
         self.wrist_offset = math.radians(43)          # Offset for wrist positioning
@@ -48,9 +48,8 @@ class Arm:
     def transform_sensor_to_arm(self, x, y, angle):
         # Convert sensor readings into arm coordinates.
         # 'angle' should be given in degrees.
-        theta = math.radians(angle)                     # Convert angle to radians for computation
-        x_arm = self.sensor_x + x * math.cos(theta) - y * math.sin(theta)
-        y_arm = self.sensor_y + x * math.sin(theta) + y * math.cos(theta)
+        x_arm = self.sensor_x + x * math.cos(self.sensor_angle) - y * math.sin(self.sensor_angle)
+        y_arm = self.sensor_y + x * math.sin(self.sensor_angle) + y * math.cos(self.sensor_angle)
         # Adjust wrist angle by adding sensor's mounting angle
         angle_arm = angle + self.sensor_angle
         return x_arm, y_arm, angle_arm
