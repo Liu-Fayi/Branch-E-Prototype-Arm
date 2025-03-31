@@ -51,7 +51,8 @@ def initialize_hardware(interrupt_pin=board.GP18):
     print(i2c.scan())
     i2c.writeto(vl53._i2c_addr, bytes([0x7F, 0x07]))  # Select ROI register bank
     i2c.writeto(vl53._i2c_addr, bytes([0x09, 0x00, 0x06, 0x02]))  
-    i2c.writeto(vl53._i2c_addr, bytes([0x0A, 0x00, 0x09, 0x07]))  
+    i2c.writeto(vl53._i2c_addr, bytes([0x0A, 0x00, 0x09, 0x07]))
+    i2c.unlock()  
     vl53.start_ranging()
     pwm = pwmio.PWMOut(board.GP1, frequency=50, duty_cycle=2**15)
     servo = adafruit_motor.servo.Servo(pwm)

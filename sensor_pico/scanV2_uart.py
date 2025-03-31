@@ -1,3 +1,4 @@
+# Write your code here :-)
 import board
 import busio
 import adafruit_vl53l1x
@@ -5,10 +6,11 @@ import time
 import pwmio
 import adafruit_motor.servo
 import digitalio
+import math
 import struct
 
 # Constants used for scanning, smoothing, and UART communications
-ANGLE_RANGE = (0, 100)      # Range of angles to scan (degrees)
+ANGLE_RANGE = (0, 120)      # Range of angles to scan (degrees)
 ANGLE_STEP = 1              # Step size between scans (degrees)
 NUM_READINGS = 20           # Number of readings to average per angle
 SMOOTH_STEP = 1             # Angular step for smooth servo transitions
@@ -55,7 +57,13 @@ def initialize_hardware(interrupt_pin=board.GP18):
     Also configures the interrupt pin with a pull-up resistor.
     """
     i2c = busio.I2C(scl=board.GP17, sda=board.GP16)
-    uart = busio.UART(board.TX, board.RX, baudrate=UART_BAUDRATE, timeout=0.1)
+    i2c.try_lock()
+    i2c.writeto(0x29, bytes([0x7F, 0x07]))  # Select ROI register bank
+    i2c.writeto(0x29, bytes([0x09, 0x00, 0x06, 0x00]))  
+    i2c.writeto(0x29, bytes([0x0A, 0x00, 0x09, 0x06])) 
+    
+    i2c.unlock()  
+    uart = busio.UART(board.GP12, board.GP13, baudrate=UART_BAUDRATE, timeout=0.1)
     interrupt = digitalio.DigitalInOut(interrupt_pin)
     interrupt.direction = digitalio.Direction.INPUT
     interrupt.pull = digitalio.Pull.UP
@@ -65,7 +73,7 @@ def initialize_hardware(interrupt_pin=board.GP18):
     vl53.timing_budget = 50  # Set measurement timing budget
     vl53.start_ranging()
     # Setup servo on a PWM pin (using a default PWM duty setting)
-    pwm = pwmio.PWMOut(board.GP1, frequency=50, duty_cycle=2**15)
+    pwm = pwmio.PWMOut(board.GP0, frequency=50, duty_cycle=3**15)
     servo = adafruit_motor.servo.Servo(pwm)
     # Wait until the sensor's interrupt indicates readiness.
     if not wait_for_interrupt(vl53, interrupt):
@@ -96,6 +104,7 @@ def wait_for_go_signal(uart):
             print("Received 'go' signal")
             break
         time.sleep(0.1)
+        print("scaning")
 
 def set_servo_angle(servo, current_angle, target_angle):
     """
@@ -148,7 +157,14 @@ def scan(vl53, servo, interrupt, current_angle):
     data = []
     for angle in angles:
         current_angle = set_servo_angle(servo, current_angle, angle)
-        data.append((angle, read_average_distance(vl53, interrupt)))
+        distance = read_average_distance(vl53, interrupt)
+        if distance != None:
+            x = distance * get_sin(current_angle)
+            y = distance * get_cos(current_angle)
+            print(distance)
+        #print(current_angle, distance)
+        data.append((angle, distance))
+        time.sleep(.1)
     return data, current_angle
 
 def detect_edges(data):
@@ -251,6 +267,8 @@ def main():
         if len(edges) == 2:
             center, orientation, center_angle, center_dist = calculate_object_properties(edges, data)
             send_uart_data(uart, center, orientation)
+            print(center, orientation, center_dist)
+            print(math.atan2(orientation[1], orientation[0]))
             # Move servo to center angle, wait, then return to zero
             current_angle = set_servo_angle(servo, current_angle, center_angle)
             time.sleep(8)
