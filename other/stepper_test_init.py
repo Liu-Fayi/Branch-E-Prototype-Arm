@@ -1,4 +1,4 @@
-from stepper import Stepper
+from actuating_pico.stepper import Stepper
 import time
 import board
 import digitalio

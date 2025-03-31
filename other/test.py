@@ -1,4 +1,4 @@
-import ik
+import actuating_pico.ik as ik
 import math
 
 class Transform:

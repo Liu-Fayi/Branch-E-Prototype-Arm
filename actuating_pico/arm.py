@@ -1,6 +1,6 @@
-from ik import IKSolver
-from servo import Servo
-from stepper import Stepper
+from actuating_pico.ik import IKSolver
+from actuating_pico.servo import Servo
+from actuating_pico.stepper import Stepper
 import math
 import board
 import busio
