@@ -14,7 +14,7 @@ BASE_LIMIT_PIN = board.GP0
 Z_LIMIT_PIN = board.GP1
 
 class Arm:
-    def __init__(self, sensor_x=-108, sensor_y=100, sensor_angle=29):
+    def __init__(self, sensor_x=-108, sensor_y=100, sensor_angle=15):
         # Initialize basic configuration parameters converting degrees to radians when needed
         self.zero_base_angle = math.radians(268)     # Zero reference for base rotation
         self.wrist_offset = math.radians(43)          # Offset for wrist positioning
@@ -68,8 +68,8 @@ class Arm:
             t2 = 0
         print(math.degrees(t1), math.degrees(t2))
         # Set velocities for smooth movement on base and z-axis
-        self.base_rotation.set_velocity(150)
-        self.z_movement.set_velocity(800)
+        self.base_rotation.set_velocity(750)
+        self.z_movement.set_velocity(1500)
         # Move the elbow to the angle t2 (forearm joint)
         self.elbow_move(t2)
         # Adjust wrist: combine computed joint angles with desired wrist angle and a 90° offset to match physical setup.
@@ -184,6 +184,8 @@ class Arm:
         # 2. Align elbow and wrist for drop.
         # 3. Rotate base to the back.
         # 4. Open claw to release.
+        self.base_rotation.set_velocity(200)
+        self.z_movement.set_velocity(800)
         self.z_move_to(30)
         self.elbow_move(0)
         self.wrist_move(0)
